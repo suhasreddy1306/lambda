@@ -1,0 +1,69 @@
+//Insert
+
+const AWS = require("aws-sdk");
+
+const dynamo = new AWS.DynamoDB.DocumentClient();
+
+exports.handler = async (event, context) => {
+    let body;
+    let statusCode = 200;
+    await dynamo
+          .put({
+            TableName: event.tablename,
+            Item: {
+              EMP_ID: event.id,
+              name: event.name,
+              salary: event.salary
+            }
+          })
+          .promise();
+    body = `Put item done`;
+  
+    return body;
+};
+
+
+----------------------
+//GET
+const AWS = require("aws-sdk");
+
+const dynamo = new AWS.DynamoDB.DocumentClient();
+
+exports.handler = async (event, context) => {
+    let body;
+    let statusCode = 200;
+     body = await dynamo
+          .get({
+            TableName: event.tablename,
+            Key: {
+              EMP_ID: event.id
+            }
+          })
+    .promise();
+  
+    return body;
+};
+-----------------------------------
+//DELETE
+const AWS = require("aws-sdk");
+
+const dynamo = new AWS.DynamoDB.DocumentClient();
+
+exports.handler = async (event, context) => {
+    let body;
+    let statusCode = 200;
+     await dynamo
+          .delete({
+            TableName: event.tablename,
+            Key: {
+              EMP_ID: event.id
+            }
+          })
+          .promise();
+  
+    return "deleted record related to "+event.id;
+};
+--------------------------------------------------------
+
+aws s3 cp slotpull.js.zip s3://BUCKET
+
